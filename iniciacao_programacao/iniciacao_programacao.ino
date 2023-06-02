@@ -1,26 +1,27 @@
-#include <dht11.h>
-#define DHT11PIN 4
+#include "DHT.h"
 
-int LED_VERMELHO = 3;
-int LED_AMARELO = 4;
-int LED_VERDE = 5;
-int SENSOR_LUMINOSIDADE = 10;
+#define DHTPIN 2
+#define DHTTYPE DHT11
 
-dht11 DHT11;
+int LED_VERMELHO = 10;
+int LED_LARANJA = 12;
+int LED_VERDE = 11;
+int SENSOR_LUZ = A0;
+#define SENSOR_RUIDO A3
+
+DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
-  Serial.begin(9600);
   pinMode(LED_VERMELHO, OUTPUT);
-  pinMode(LED_AMARELO, OUTPUT);
+  pinMode(LED_LARANJA, OUTPUT);
   pinMode(LED_VERDE, OUTPUT);
-  pinMode(SENSOR_LUMINOSIDADE, INPUT);
+  pinMode(SENSOR_LUZ, INPUT);
+  pinMode(SENSOR_RUIDO, INPUT);
+
+  dht.begin();
+  Serial.begin(9600);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  int chk = DHT11.read(DHT11PIN);
-  const humidade = DHT11.humidity;
-  const temperatura = DHT11.temperature;
 
-  int valorLuminosidade = analogRead(SENSOR_LUMINOSIDADE);
 }
