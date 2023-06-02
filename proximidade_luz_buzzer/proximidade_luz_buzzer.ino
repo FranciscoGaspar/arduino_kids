@@ -41,6 +41,21 @@ void loop ()
 
   // Convert the time into a distance
   cm = (duration/2) / 29.1;
+
+
+  int chk = DHT.read11(SENSOR_TEMPERATURA_HUMIDADE);
+  int temperatura = DHT.temperature;
+  int humidade = DHT.humidity;
+
+
+  delay(1000);
+
+
+  delay(1000);                      // wait for a second
+  digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
+  delay(1000);
+
+  
   
 
   Serial.print(cm);
@@ -50,7 +65,10 @@ void loop ()
   display.setBrightness(5);
   display.showNumberDec(cm);
 
-  delay(500);
+  delay(1000);
+
+
+
 	display.clear();
 
   if (cm >= 50) {
@@ -74,4 +92,21 @@ void loop ()
 
     tone(buzzer, 50, 500);
   }
+
+
+  if (temperatura > 25) {
+
+    
+
+    Serial.println(temperatura);
+    Serial.println("Temperatura superior a 25ºC");
+
+
+  } else if (temperatura < 20) {
+    Serial.println("Temperatura inferior a 20ºC");
+  } else {
+    Serial.println("Temperatura inferior a 25ºC e superior a 20ºC");
+  }
+
+
 }
