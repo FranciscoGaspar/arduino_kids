@@ -1,3 +1,9 @@
+#include <TM1637Display.h>
+#define CLK 5
+#define DIO 6
+
+TM1637Display display = TM1637Display(CLK, DIO);
+
 int ledPin = 13;
 int ledPin2 = 12;
 int ledPin3 = 11;
@@ -11,6 +17,8 @@ bool isGreen = false;
 int x = 9;
 unsigned long start;
 unsigned long current;
+bool win = false;
+int points = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -25,20 +33,28 @@ void setup() {
 
 void loop() {
 
+  display.setBrightness(5);
+  display.showNumberDec(points);
+
   while (true) {
+
     previousState = buttonState;
     buttonState = digitalRead(buttonPin);
 
     if (x == 11 && buttonState == HIGH && previousState == LOW) {
       isGreen = true;
-      if (speed - 50 != 50) {
+      if (speed != 100) {
         speed -= 50;
+        points += 100;
+        display.showNumberDec(points);
       } else {
         Serial.println("You Win!");
-        speed = 500;
+        win = true;
+        break;
       }
     } else if (x != 11 && buttonState == HIGH && previousState == LOW) {
       Serial.println("LOOSER!");
+      win = false;
       break;
     } else {
       isGreen = false;
@@ -56,13 +72,36 @@ void loop() {
     }
   }
 
-  digitalWrite(13, HIGH);
-  digitalWrite(12, HIGH);
-  digitalWrite(10, HIGH);
-  digitalWrite(9, HIGH);
-  delay(1000);
-  digitalWrite(13, LOW);
-  digitalWrite(12, LOW);
-  digitalWrite(10, LOW);
-  digitalWrite(9, LOW);
+  if( win == false) {
+    digitalWrite(13, HIGH);
+    digitalWrite(12, HIGH);
+    digitalWrite(10, HIGH);
+    digitalWrite(9, HIGH);
+    delay(500);
+    digitalWrite(13, LOW);
+    digitalWrite(12, LOW);
+    digitalWrite(10, LOW);
+    digitalWrite(9, LOW);
+    delay(500);
+    digitalWrite(13, HIGH);
+    digitalWrite(12, HIGH);
+    digitalWrite(10, HIGH);
+    digitalWrite(9, HIGH);
+    delay(500);
+    digitalWrite(13, LOW);
+    digitalWrite(12, LOW);
+    digitalWrite(10, LOW);
+    digitalWrite(9, LOW);
+  } else {
+    digitalWrite(11, HIGH);
+    delay(500);
+    digitalWrite(11, LOW);
+    delay(500);
+    digitalWrite(11, HIGH);
+    delay(500);
+    digitalWrite(11, LOW);
+  }
+
+  speed = 500;
+  points = 0;
 }

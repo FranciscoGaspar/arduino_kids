@@ -5,9 +5,9 @@
 TM1637Display display = TM1637Display(CLK, DIO);
 
 //KY016 3-color LED module
-int redpin = 10; // select the pin for the red LED
-int bluepin = 9; // select the pin for the blue LED
-int greenpin = 11 ;// select the pin for the green LED
+int redpin = 9; // select the pin for the red LED
+int bluepin = 11; // select the pin for the blue LED
+int greenpin = 10 ;// select the pin for the green LED
 int trigPin = 6;    // Trigger
 int echoPin = 12;    // Echo
 int buzzer = 8;
@@ -32,7 +32,7 @@ void loop ()
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
- 
+
   // Read the signal from the sensor: a HIGH pulse whose
   // duration is the time (in microseconds) from the sending
   // of the ping to the reception of its echo off of an object.
@@ -43,21 +43,6 @@ void loop ()
   cm = (duration/2) / 29.1;
 
 
-  int chk = DHT.read11(SENSOR_TEMPERATURA_HUMIDADE);
-  int temperatura = DHT.temperature;
-  int humidade = DHT.humidity;
-
-
-  delay(1000);
-
-
-  delay(1000);                      // wait for a second
-  digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
-  delay(1000);
-
-  
-  
-
   Serial.print(cm);
   Serial.print("cm");
   Serial.println();
@@ -65,10 +50,7 @@ void loop ()
   display.setBrightness(5);
   display.showNumberDec(cm);
 
-  delay(1000);
-
-
-
+  delay(500);
 	display.clear();
 
   if (cm >= 50) {
@@ -92,21 +74,4 @@ void loop ()
 
     tone(buzzer, 50, 500);
   }
-
-
-  if (temperatura > 25) {
-
-    
-
-    Serial.println(temperatura);
-    Serial.println("Temperatura superior a 25ºC");
-
-
-  } else if (temperatura < 20) {
-    Serial.println("Temperatura inferior a 20ºC");
-  } else {
-    Serial.println("Temperatura inferior a 25ºC e superior a 20ºC");
-  }
-
-
 }
